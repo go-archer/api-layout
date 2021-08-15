@@ -2,7 +2,7 @@ package state
 
 import "strings"
 
-// 请求验证错误
+// ValidError 请求验证错误
 type ValidError struct {
 	Key     string
 	Message string

@@ -16,10 +16,10 @@ func (c *Controller) JSON(ctx *gin.Context, args interface{}) {
 	if e, ok := args.(error); ok {
 		switch err := e.(type) {
 		case *mysql.MySQLError:
-			ctx.SecureJSON(state.DatabaseError.StatusCode(), state.DatabaseError.Response(err))
+			ctx.JSON(state.DatabaseError.StatusCode(), state.DatabaseError.Response(err))
 			return
 		case state.ValidErrors:
-			ctx.SecureJSON(state.InvalidParams.StatusCode(), state.InvalidParams.Response(err))
+			ctx.JSON(state.InvalidParams.StatusCode(), state.InvalidParams.Response(err))
 			return
 		case *state.Error:
 			ctx.JSON(err.StatusCode(), err.Response())
@@ -30,7 +30,7 @@ func (c *Controller) JSON(ctx *gin.Context, args interface{}) {
 			return
 		}
 	}
-	ctx.SecureJSON(state.Success.StatusCode(), args)
+	ctx.JSON(state.Success.StatusCode(), gin.H{"code": 0, "data": args})
 }
 
 func (c *Controller) BindAndValid(ctx *gin.Context, v interface{}) (bool, state.ValidErrors) {

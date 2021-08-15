@@ -19,9 +19,6 @@
 ## 安装文档插件
 ```bash
 go get -u github.com/swaggo/swag/cmd/swag
-
-语法参考地址：
-https://github.com/swaggo/swag/blob/master/README_zh-CN.md
 ```
 ## 请求验证使用说明
 ### 自定义验证

@@ -9,6 +9,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/go-zelus/zelus/core/stores/mysql"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-zelus/api-layout/docs"
 	"github.com/go-zelus/api-layout/router"
@@ -37,6 +39,8 @@ func main() {
 	config.Load("./config/config.yml")
 	// 初始化日志
 	logx.Init()
+	// 初始化mysql
+	mysql.Init()
 
 	r := router.New()
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

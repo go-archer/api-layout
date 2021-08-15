@@ -27,12 +27,8 @@ func New() *gin.Engine {
 	r.NoRoute(NoRoute)
 	r.NoMethod(NoMethod)
 
-	apiV1(r)
+	v1 := r.Group("/api/v1")
+	areaRouter(v1)
 
 	return r
-}
-
-func apiV1(e *gin.Engine) {
-	pre := e.Group("/api/v1")
-	userRouter(pre)
 }

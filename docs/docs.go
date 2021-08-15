@@ -32,9 +32,9 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/users/user": {
-            "post": {
-                "description": "Hello",
+        "/areas/cities/{code}": {
+            "get": {
+                "description": "根据省份行政代码获取城市列表",
                 "consumes": [
                     "application/json"
                 ],
@@ -42,31 +42,187 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户"
+                    "行政区域"
                 ],
-                "summary": "Hello",
+                "summary": "获取城市列表",
                 "parameters": [
                     {
-                        "description": "用户名",
-                        "name": "param",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entity.HelloRequest"
-                        }
+                        "type": "integer",
+                        "description": "省份行政代码",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
+                        "description": "城市列表",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Area"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "错误信息",
+                        "schema": {
+                            "$ref": "#/definitions/state.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/areas/committees/{code}": {
+            "get": {
+                "description": "根据街道行政代码获取绝味会列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "行政区域"
+                ],
+                "summary": "获取居委会列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "街道行政代码",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "居委会列表",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Area"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "错误信息",
+                        "schema": {
+                            "$ref": "#/definitions/state.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/areas/districts/{code}": {
+            "get": {
+                "description": "根据城市行政代码获取区县列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "行政区域"
+                ],
+                "summary": "获取区县列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "城市行政代码",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "区县列表",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Area"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "错误信息",
+                        "schema": {
+                            "$ref": "#/definitions/state.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/areas/provinces": {
+            "get": {
+                "description": "获取省份列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "行政区域"
+                ],
+                "summary": "获取省份列表",
+                "responses": {
+                    "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entity.HelloResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Area"
+                            }
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/state.Error"
+                            "$ref": "#/definitions/state.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/areas/streets/{code}": {
+            "get": {
+                "description": "根据区县行政代码获取街道列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "行政区域"
+                ],
+                "summary": "获取街道列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "区县行政代码",
+                        "name": "code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "街道列表",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entity.Area"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "错误信息",
+                        "schema": {
+                            "$ref": "#/definitions/state.ErrorResponse"
                         }
                     }
                 }
@@ -74,27 +230,67 @@ var doc = `{
         }
     },
     "definitions": {
-        "entity.HelloRequest": {
+        "entity.Area": {
             "type": "object",
-            "required": [
-                "name"
-            ],
             "properties": {
+                "MergerName": {
+                    "description": "组合名",
+                    "type": "string"
+                },
+                "Pinyin": {
+                    "description": "拼音",
+                    "type": "string"
+                },
+                "area_code": {
+                    "description": "行政代码",
+                    "type": "integer"
+                },
+                "city_code": {
+                    "description": "区号",
+                    "type": "string"
+                },
+                "lat": {
+                    "description": "纬度",
+                    "type": "number"
+                },
+                "level": {
+                    "description": "层级",
+                    "type": "integer"
+                },
+                "lng": {
+                    "description": "经度",
+                    "type": "number"
+                },
                 "name": {
+                    "description": "名称",
                     "type": "string"
+                },
+                "parent_code": {
+                    "description": "父级行政代码",
+                    "type": "integer"
+                },
+                "short_name": {
+                    "description": "简称",
+                    "type": "string"
+                },
+                "zip_code": {
+                    "description": "邮政编码",
+                    "type": "integer"
                 }
             }
         },
-        "entity.HelloResponse": {
+        "state.ErrorResponse": {
             "type": "object",
             "properties": {
-                "value": {
+                "code": {
+                    "description": "错误代码",
+                    "type": "integer"
+                },
+                "message": {
+                    "description": "错误描述",
                     "type": "string"
                 }
             }
-        },
-        "state.Error": {
-            "type": "object"
         }
     }
 }`

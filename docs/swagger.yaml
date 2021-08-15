@@ -1,18 +1,49 @@
 basePath: /api/v1
 definitions:
-  entity.HelloRequest:
+  entity.Area:
     properties:
+      MergerName:
+        description: 组合名
+        type: string
+      Pinyin:
+        description: 拼音
+        type: string
+      area_code:
+        description: 行政代码
+        type: integer
+      city_code:
+        description: 区号
+        type: string
+      lat:
+        description: 纬度
+        type: number
+      level:
+        description: 层级
+        type: integer
+      lng:
+        description: 经度
+        type: number
       name:
+        description: 名称
         type: string
-    required:
-    - name
+      parent_code:
+        description: 父级行政代码
+        type: integer
+      short_name:
+        description: 简称
+        type: string
+      zip_code:
+        description: 邮政编码
+        type: integer
     type: object
-  entity.HelloResponse:
+  state.ErrorResponse:
     properties:
-      value:
+      code:
+        description: 错误代码
+        type: integer
+      message:
+        description: 错误描述
         type: string
-    type: object
-  state.Error:
     type: object
 host: 127.0.0.1:8080
 info:
@@ -28,30 +59,133 @@ info:
   title: API文档
   version: "1.0"
 paths:
-  /users/user:
-    post:
+  /areas/cities/{code}:
+    get:
       consumes:
       - application/json
-      description: Hello
+      description: 根据省份行政代码获取城市列表
       parameters:
-      - description: 用户名
-        in: body
-        name: param
+      - description: 省份行政代码
+        in: path
+        name: code
         required: true
-        schema:
-          $ref: '#/definitions/entity.HelloRequest'
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 城市列表
+          schema:
+            items:
+              $ref: '#/definitions/entity.Area'
+            type: array
+        "400":
+          description: 错误信息
+          schema:
+            $ref: '#/definitions/state.ErrorResponse'
+      summary: 获取城市列表
+      tags:
+      - 行政区域
+  /areas/committees/{code}:
+    get:
+      consumes:
+      - application/json
+      description: 根据街道行政代码获取绝味会列表
+      parameters:
+      - description: 街道行政代码
+        in: path
+        name: code
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 居委会列表
+          schema:
+            items:
+              $ref: '#/definitions/entity.Area'
+            type: array
+        "400":
+          description: 错误信息
+          schema:
+            $ref: '#/definitions/state.ErrorResponse'
+      summary: 获取居委会列表
+      tags:
+      - 行政区域
+  /areas/districts/{code}:
+    get:
+      consumes:
+      - application/json
+      description: 根据城市行政代码获取区县列表
+      parameters:
+      - description: 城市行政代码
+        in: path
+        name: code
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 区县列表
+          schema:
+            items:
+              $ref: '#/definitions/entity.Area'
+            type: array
+        "400":
+          description: 错误信息
+          schema:
+            $ref: '#/definitions/state.ErrorResponse'
+      summary: 获取区县列表
+      tags:
+      - 行政区域
+  /areas/provinces:
+    get:
+      consumes:
+      - application/json
+      description: 获取省份列表
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entity.HelloResponse'
+            items:
+              $ref: '#/definitions/entity.Area'
+            type: array
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/state.Error'
-      summary: Hello
+            $ref: '#/definitions/state.ErrorResponse'
+      summary: 获取省份列表
       tags:
-      - 用户
+      - 行政区域
+  /areas/streets/{code}:
+    get:
+      consumes:
+      - application/json
+      description: 根据区县行政代码获取街道列表
+      parameters:
+      - description: 区县行政代码
+        in: path
+        name: code
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 街道列表
+          schema:
+            items:
+              $ref: '#/definitions/entity.Area'
+            type: array
+        "400":
+          description: 错误信息
+          schema:
+            $ref: '#/definitions/state.ErrorResponse'
+      summary: 获取街道列表
+      tags:
+      - 行政区域
 swagger: "2.0"

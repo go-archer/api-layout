@@ -18,8 +18,8 @@ type (
 	}
 
 	ErrorResponse struct {
-		Code    int32  `json:"code"`
-		Message string `json:"message"`
+		Code    int32  `json:"code"`    // 错误代码
+		Message string `json:"message"` // 错误描述
 	}
 )
 
