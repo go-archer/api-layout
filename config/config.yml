@@ -1,0 +1,43 @@
+app:
+  port: 8080
+  debug: true
+  token_expire: 7200
+mysql:
+  - name: default
+    host: 127.0.0.1
+    port: 3306
+    db: zelus
+    user: root
+    password: 123456
+    max_idel: 10
+    max_open: 10
+    timeout: 60
+redis:
+  - name: ""
+    db: 0
+    conn: 127.0.0.1:6379
+    password: "123456"
+    timeout: 60
+    pool_size: 10
+  - name: "cache"
+    db: 1
+    conn: 127.0.0.1:6379
+    password: "123456"
+    timeout: 60
+    pool_size: 10
+email:
+  host: smtp.qq.com
+  port: 465
+  username: 8923311@qq.com
+  password: zp@8923311
+  is_ssl: true
+  from: 8923311@qq.com
+  to:
+    - archer.plus@qq.com
+sms:
+  api_key: 
+  tpl_register: 1768026
+  tpl_login: 2687948
+  tpl_password: 1768192
+log:
+  level: debug
